@@ -1,0 +1,39 @@
+services:
+  app:
+    container_name: image_pixels_colorize-api
+    image: image_pixels_colorize-api:1.0.0
+    build: .
+    ports:
+      - 3001:3001
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - ./data:/app/data
+    networks:
+      - app-network
+
+  db:
+    container_name: pgdb-python
+    image: postgres
+    ports:
+      - 5433:5432
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata: {}
+
+networks:
+  app-network:
+    driver: bridge
