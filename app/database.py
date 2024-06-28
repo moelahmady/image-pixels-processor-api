@@ -12,6 +12,12 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 def get_db():
+    """
+    Function to get a database session.
+
+    Returns:
+        db (SessionLocal): A database session object.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -19,6 +25,15 @@ def get_db():
         db.close()
 
 class Image(Base):
+    """
+    SQLAlchemy model for the 'images' table.
+
+    Attributes:
+        id (int): The primary key of the image.
+        depth (int): The depth of the image.
+        path (str): The path of the image.
+        image_data (bytes): The binary data of the image.
+    """
     __tablename__ = 'images'
 
     id = Column(Integer, primary_key=True, index=True)

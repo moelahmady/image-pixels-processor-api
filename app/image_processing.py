@@ -6,6 +6,15 @@ import matplotlib.pyplot as plt
 import os
 
 def csv_to_image(data):
+    """
+    Convert a CSV data frame to a grayscale image array.
+
+    Args:
+        data (pandas.DataFrame): The input CSV data frame.
+
+    Returns:
+        numpy.ndarray: The grayscale image array.
+    """
     image_array = data.iloc[:, 1:].values
     image_array = np.nan_to_num(image_array)  # Replace NaN with zero
     min_val = np.min(image_array)
@@ -16,6 +25,16 @@ def csv_to_image(data):
     return image_array
 
 def resize_image(image_array, new_width=150):
+    """
+    Resize an image array while maintaining the aspect ratio.
+
+    Args:
+        image_array (numpy.ndarray): The input image array.
+        new_width (int): The desired width of the resized image.
+
+    Returns:
+        numpy.ndarray: The resized image array.
+    """
     image = Image.fromarray(image_array)
     width_percent = (new_width / float(image.size[0]))
     new_height = int((float(image.size[1]) * float(width_percent)))
@@ -23,6 +42,17 @@ def resize_image(image_array, new_width=150):
     return np.array(new_image)
 
 def apply_custom_colormap(full_image, depth_min, depth_max):
+    """
+    Apply a custom colormap to a specific depth range of an image.
+
+    Args:
+        full_image (numpy.ndarray): The input image array.
+        depth_min (int): The minimum depth value to apply the colormap.
+        depth_max (int): The maximum depth value to apply the colormap.
+
+    Returns:
+        numpy.ndarray: The image array with the custom colormap applied.
+    """
     plt.figure(figsize=(10, full_image.shape[0]/10))
     
     # Ensure full_image is 2D
@@ -52,6 +82,17 @@ def apply_custom_colormap(full_image, depth_min, depth_max):
     return np.array(colored_image)
 
 def save_image(image_array, depth, folder):
+    """
+    Save an image array to a file.
+
+    Args:
+        image_array (numpy.ndarray): The input image array.
+        depth (str): The depth information to include in the filename.
+        folder (str): The folder path to save the image.
+
+    Returns:
+        None
+    """
     os.makedirs(folder, exist_ok=True)
     image = Image.fromarray(image_array.astype('uint8'))
     if depth == 'original':
