@@ -45,30 +45,28 @@ This Python application processes image data from a CSV file, resizes images, st
    ```
    Replace `username`, `password`, `dbname`, and other placeholder values with your desired PostgreSQL credentials and settings.
 
-Install Postgres locally:
+5. Install Postgres locally:
+    
+   For macOS using Homebrew:
+   ```
+   brew install postgresql
+   brew services start postgresql
+   ```     
+   For Ubuntu:
 
-    - **For macOS using Homebrew**:
+   ```
+   sudo apt update
+   sudo apt install postgresql postgresql-contrib
+   sudo systemctl start postgresql
+   ```
 
-        ```bash
-        brew install postgresql
-        brew services start postgresql
-        ```
-
-    - **For Ubuntu**:
-
-        ```bash
-        sudo apt update
-        sudo apt install postgresql postgresql-contrib
-        sudo systemctl start postgresql
-        ```
-
-    - **For Windows**:
+   For Windows:
 
         Download and install PostgreSQL from [the official website](https://www.postgresql.org/download/windows/).
 
-5. Create a new database and user:
+6. Create a new database and user:
 
-    ```bash
+    ```
     psql -U postgres
     CREATE DATABASE image_db;
     CREATE USER image_db_user WITH ENCRYPTED PASSWORD 'yourpassword';
@@ -76,9 +74,9 @@ Install Postgres locally:
     \q
     ```
 
-6. Update the `.env` file with the new database credentials.
+7. Update the `.env` file with the new database credentials.
 
-7. Run the application:
+8. Run the application:
    ```
    python app.py
    ```
