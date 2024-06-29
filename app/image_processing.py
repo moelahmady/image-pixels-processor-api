@@ -93,9 +93,17 @@ def save_image(image_array, depth, folder):
     Returns:
         None
     """
-    os.makedirs(folder, exist_ok=True)
+    # Use environment variable or default to local directory
+    shared_folder_path = os.getenv('OUTPUT_DIR', './output')
+    
+    # Ensure the directory exists
+    os.makedirs(os.path.join(shared_folder_path, folder), exist_ok=True)
+    
+    # Convert the image array to an image
     image = Image.fromarray(image_array.astype('uint8'))
+    
+    # Save the image with appropriate filename
     if depth == 'original':
-        image.save(os.path.join(folder, f'depth_original.png'))
+        image.save(os.path.join(shared_folder_path, folder, f'depth_original.png'))
     else:
-        image.save(os.path.join(folder, f'depth_{depth}.png'))
+        image.save(os.path.join(shared_folder_path, folder, f'depth_{depth}.png'))

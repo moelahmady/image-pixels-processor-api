@@ -93,12 +93,12 @@ def configure_routes(app):
 
                 # Save the original image
                 save_image(img_array, 'original', 'original_images')
-                original_image_path = 'original_images/depth_original.png'
+                original_image_path = '/output/original_images/depth_original.png'
 
                 # Apply colormap and save the colored image
                 colored_image = apply_custom_colormap(img_array, depth_min, depth_max)
                 save_image(colored_image, f'{depth_min}_{depth_max}', 'colored_images')
-                colored_image_path = f'colored_images/depth_{depth_min}_{depth_max}.png'
+                colored_image_path = f'/output/colored_images/depth_{depth_min}_{depth_max}.png'
 
                 print(f"Saved original image and applied color map for depths {depth_min} to {depth_max}")
 

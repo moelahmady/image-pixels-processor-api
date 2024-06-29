@@ -42,6 +42,7 @@ This Python application processes image data from a CSV file, resizes images, st
    ```
    DATABASE_URL=postgresql://username:password@localhost:5432/dbname
    PORT=3001
+   OUTPUT_DIR=./output
    ```
    Replace `username`, `password`, `dbname`, and other placeholder values with your desired PostgreSQL credentials and settings.
 
@@ -127,13 +128,6 @@ This will start both the PostgreSQL database and the Python application. The API
    http://localhost:3001/get_frames?depth_min=100&depth_max=200
    ```
    This will return paths to the original and colorized image frames for depths between 100 and 200.
-
-   If you want to view the genrated images you can copy them from inside the container to your desired path.
-
-   ```
-   docker cp image_pixels_colorize-api:/app/colored_images /your/path
-   docker cp image_pixels_colorize-api:/app/original_images /your/path
-   ```
 
 ## Development
 

@@ -11,6 +11,9 @@ services:
       - db
     volumes:
       - ./data:/app/data
+      - ./output:/app/output
+    environment:
+      OUTPUT_DIR: '/app/output'  # Environment variable for Docker
     networks:
       - app-network
 
