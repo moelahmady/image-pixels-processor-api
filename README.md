@@ -2,6 +2,17 @@
 
 This Python application processes image data from a CSV file, resizes images, stores them in a PostgreSQL database, and provides an API to retrieve and colorize image frames based on depth ranges.
 
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation and Setup](#installation-and-setup)
+  - [Local Setup](#local-setup)
+  - [Containerized Setup](#containerized-setup)
+- [API Usage](#api-usage)
+- [Development](#development)
+- [Troubleshooting](#troubleshooting)
+
 ## Features
 
 - Convert CSV data to image
@@ -88,9 +99,7 @@ The API should now be accessible at `http://localhost:3001`.
 
 1. Ensure Docker and Docker Compose are installed on your system.
 
-2. Update the `.env` file with the new database credentials. And note that
-the postgres db host name should be as the db service name in docker-compose file.
-in our Example the hostname should be is "db"
+2. Update the `.env` file with the new database credentials. Note that the postgres db host name should be the same as the db service name in the docker-compose file. In our example, the hostname should be "db".
 
    ```
    DATABASE_URL=postgresql://username:password@db:5432/dbname
@@ -100,9 +109,18 @@ in our Example the hostname should be is "db"
    POSTGRES_HOST=db
    POSTGRES_PORT=5432
    PORT=3001
+   OUTPUT_DIR=/app/output
    ```
 
-3. Build and run the containers:
+3. **Important**: Create the `output` folder locally in the project root directory. This folder will be mounted as a volume in the Docker container.
+
+   ```
+   mkdir output
+   ```
+
+   Make sure the `OUTPUT_DIR` in the `.env` file matches the path specified in the `docker-compose.yml` file for the `output` volume mount.
+
+4. Build and run the containers:
    ```
    docker-compose up --build
    ```

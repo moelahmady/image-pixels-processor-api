@@ -3,7 +3,11 @@ from PIL import Image
 import matplotlib
 matplotlib.use('Agg')  # Use a non-GUI backend
 import matplotlib.pyplot as plt
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
+
 
 def csv_to_image(data):
     """
@@ -82,6 +86,7 @@ def apply_custom_colormap(full_image, depth_min, depth_max):
     return np.array(colored_image)
 
 def save_image(image_array, depth, folder):
+
     """
     Save an image array to a file.
 
@@ -94,7 +99,7 @@ def save_image(image_array, depth, folder):
         None
     """
     # Use environment variable or default to local directory
-    shared_folder_path = os.getenv('OUTPUT_DIR', './output')
+    shared_folder_path = os.getenv('OUTPUT_DIR')
     
     # Ensure the directory exists
     os.makedirs(os.path.join(shared_folder_path, folder), exist_ok=True)
@@ -107,3 +112,4 @@ def save_image(image_array, depth, folder):
         image.save(os.path.join(shared_folder_path, folder, f'depth_original.png'))
     else:
         image.save(os.path.join(shared_folder_path, folder, f'depth_{depth}.png'))
+    

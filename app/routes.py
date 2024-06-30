@@ -7,6 +7,10 @@ import pandas as pd
 import io
 from PIL import Image as PILImage
 import numpy as np
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def configure_routes(app):
     """
@@ -26,7 +30,7 @@ def configure_routes(app):
         """
 
         # Read the CSV data
-        data = pd.read_csv('data/AIQ - Backend Engineer Assignment - Data .csv')
+        data = pd.read_csv(os.getenv('CSV_IMAGE_PATH'))
         db = next(get_db())
 
         print("Starting image processing...")
@@ -93,12 +97,12 @@ def configure_routes(app):
 
                 # Save the original image
                 save_image(img_array, 'original', 'original_images')
-                original_image_path = '/output/original_images/depth_original.png'
+                original_image_path = f'/{os.getenv('OUTPUT_DIR')}/original_images/depth_original.png'
 
                 # Apply colormap and save the colored image
                 colored_image = apply_custom_colormap(img_array, depth_min, depth_max)
                 save_image(colored_image, f'{depth_min}_{depth_max}', 'colored_images')
-                colored_image_path = f'/output/colored_images/depth_{depth_min}_{depth_max}.png'
+                colored_image_path =  f'/{os.getenv('OUTPUT_DIR')}/colored_images/depth_{depth_min}_{depth_max}.png'
 
                 print(f"Saved original image and applied color map for depths {depth_min} to {depth_max}")
 

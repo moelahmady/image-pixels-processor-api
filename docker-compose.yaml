@@ -12,10 +12,6 @@ services:
     volumes:
       - ./data:/app/data
       - ./output:/app/output
-    environment:
-      OUTPUT_DIR: '/app/output'  # Environment variable for Docker
-    networks:
-      - app-network
 
   db:
     container_name: pgdb-python
@@ -26,17 +22,6 @@ services:
       - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
 volumes:
   pgdata: {}
-
-networks:
-  app-network:
-    driver: bridge

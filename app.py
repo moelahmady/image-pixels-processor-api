@@ -3,7 +3,6 @@ from flask import Flask
 from app.routes import configure_routes
 from dotenv import load_dotenv
 import os
-from dotenv import load_dotenv
 
 load_dotenv()  # Ensure this loads the .env file
 PORT = os.getenv('PORT')
