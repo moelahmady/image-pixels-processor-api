@@ -147,6 +147,8 @@ This will start both the PostgreSQL database and the Python application. The API
    ```
    This will return paths to the original and colorized image frames for depths between 100 and 200.
 
+   **Note**: When running the application in a containerized environment, the `/get_frames` API will return the locations of the generated images relative to the container's filesystem. Based on the `docker-compose.yml` configuration, the `/app/output` directory inside the container is mapped to the `./output` directory on the local machine. Therefore, you can find the generated images in the `./output` folder on your local system.
+
 ## Development
 
 To make changes to the application:
