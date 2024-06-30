@@ -85,33 +85,34 @@ def configure_routes(app):
         db = next(get_db())
         image = db.query(Image).first()  # Get the single image from the database
 
-        if image:
-            try:
-                # Open the image from the database and convert it to an array
-                img = PILImage.open(io.BytesIO(image.image_data))
-                img_array = np.array(img)
+        # Check if the image exists in the database
+        if not image:
+            return jsonify({'error': 'Image not found in database. Please process the image first.'}), 404
 
-                # Check if the requested depth range is valid
-                if depth_max >= img_array.shape[0]:
-                    return jsonify({'error': f'depth_max ({depth_max}) is out of range. Max depth is {img_array.shape[0] - 1}'}), 400
+        try:
+            # Open the image from the database and convert it to an array
+            img = PILImage.open(io.BytesIO(image.image_data))
+            img_array = np.array(img)
 
-                # Save the original image
-                save_image(img_array, 'original', 'original_images')
-                original_image_path = f'/{os.getenv('OUTPUT_DIR')}/original_images/depth_original.png'
+            # Check if the requested depth range is valid
+            if depth_max >= img_array.shape[0]:
+                return jsonify({'error': f'depth_max ({depth_max}) is out of range. Max depth is {img_array.shape[0] - 1}'}), 400
 
-                # Apply colormap and save the colored image
-                colored_image = apply_custom_colormap(img_array, depth_min, depth_max)
-                save_image(colored_image, f'{depth_min}_{depth_max}', 'colored_images')
-                colored_image_path =  f'/{os.getenv('OUTPUT_DIR')}/colored_images/depth_{depth_min}_{depth_max}.png'
+            # Save the original image
+            save_image(img_array, 'original', 'original_images')
+            original_image_path = f'{os.getenv("OUTPUT_DIR")}/original_images/depth_original.png'
 
-                print(f"Saved original image and applied color map for depths {depth_min} to {depth_max}")
+            # Apply colormap and save the colored image
+            colored_image = apply_custom_colormap(img_array, depth_min, depth_max)
+            save_image(colored_image, f'{depth_min}_{depth_max}', 'colored_images')
+            colored_image_path = f'{os.getenv("OUTPUT_DIR")}/colored_images/depth_{depth_min}_{depth_max}.png'
 
-                return jsonify({
-                    'original_image': original_image_path,
-                    'colored_image': colored_image_path
-                })
-            except Exception as e:
-                print(f"Error processing image: {str(e)}")
-                return jsonify({'error': 'Error processing image'}), 500
-        else:
-            return jsonify({'error': 'Image not found in database'}), 404
+            print(f"Saved original image and applied color map for depths {depth_min} to {depth_max}")
+
+            return jsonify({
+                'original_image': original_image_path,
+                'colored_image': colored_image_path
+            })
+        except Exception as e:
+            print(f"Error processing image: {str(e)}")
+            return jsonify({'error': 'Error processing image'}), 500

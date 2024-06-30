@@ -34,7 +34,7 @@ class Image(Base):
         path (str): The path of the image.
         image_data (bytes): The binary data of the image.
     """
-    __tablename__ = 'images'
+    __tablename__ = 'resized_images'
 
     id = Column(Integer, primary_key=True, index=True)
     depth = Column(Integer, unique=True, index=True)
