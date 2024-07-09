@@ -32,51 +32,65 @@ This Python application processes image data from a CSV file, resizes images, st
 
 ### Local Setup
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/image-processing-api.git
-   cd image-processing-api
-   ```
+1.  Clone the repository:
 
-2. Create a virtual environment and activate it:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-   ```
+    ```
+    git clone https://github.com/moelahmady/image-pixels-processor-api.git
+    ```
 
-3. Install the required packages:
-   ```
-   pip install -r requirements.txt
-   ```
+    ```
+    cd image-pixels-processor-api
+    ```
 
-4. Create a `.env` file in the project root and add the following:
-   ```
-   DATABASE_URL=postgresql://username:password@localhost:5432/dbname
-   PORT=3001
-   OUTPUT_DIR=./output
-   ```
-   Replace `username`, `password`, `dbname`, and other placeholder values with your desired PostgreSQL credentials and settings.
+2.  Create a virtual environment and activate it:
 
-5. Install Postgres locally:
-    
-   For macOS using Homebrew:
-   ```
-   brew install postgresql
-   brew services start postgresql
-   ```     
-   For Ubuntu:
+    ```
+    python -m venv venv
+    ```
 
-   ```
-   sudo apt update
-   sudo apt install postgresql postgresql-contrib
-   sudo systemctl start postgresql
-   ```
+    ```
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
 
-   For Windows:
+3.  Install the required packages:
 
-        Download and install PostgreSQL from [the official website](https://www.postgresql.org/download/windows/).
+    ```
+    pip install -r requirements.txt
+    ```
 
-6. Create a new database and user:
+4.  Create a `.env` file in the project root and add the following:
+
+    ```
+    DATABASE_URL=postgresql://username:password@localhost:5432/dbname
+    PORT=3001
+    OUTPUT_DIR=./output
+    CSV_IMAGE_PATH=./data/image.csv
+    ```
+
+    Replace `username`, `password`, `dbname`, and other placeholder values with your desired PostgreSQL credentials and settings.
+
+5.  Install Postgres locally:
+
+    For macOS using Homebrew:
+
+    ```
+    brew install postgresql
+    brew services start postgresql
+    ```
+
+    For Ubuntu:
+
+    ```
+    sudo apt update
+    sudo apt install postgresql postgresql-contrib
+    sudo systemctl start postgresql
+    ```
+
+    For Windows:
+
+         Download and install PostgreSQL from [the official website](https://www.postgresql.org/download/windows/).
+
+6.  Create a new database and user:
 
     ```
     psql -U postgres
@@ -86,12 +100,12 @@ This Python application processes image data from a CSV file, resizes images, st
     \q
     ```
 
-7. Update the `.env` file with the new database credentials.
+7.  Update the `.env` file with the new database credentials.
 
-8. Run the application:
-   ```
-   python app.py
-   ```
+8.  Run the application:
+    ```
+    python app.py
+    ```
 
 The API should now be accessible at `http://localhost:3001`.
 
@@ -110,6 +124,7 @@ The API should now be accessible at `http://localhost:3001`.
    POSTGRES_PORT=5432
    PORT=3001
    OUTPUT_DIR=/app/output
+   CSV_IMAGE_PATH=./data/image.csv
    ```
 
 3. **Important**: Create the `output` folder locally in the project root directory. This folder will be mounted as a volume in the Docker container.
@@ -130,21 +145,27 @@ This will start both the PostgreSQL database and the Python application. The API
 ## API Usage
 
 1. Process and store the image:
+
    ```
    POST /process_image
    ```
+
    This endpoint reads the CSV file, processes the image, and stores it in the database.
 
 2. Retrieve and colorize image frames:
+
    ```
    GET /get_frames?depth_min=<min_depth>&depth_max=<max_depth>
    ```
+
    Replace `<min_depth>` and `<max_depth>` with the desired depth range.
 
    Example:
+
    ```
    http://localhost:3001/get_frames?depth_min=100&depth_max=200
    ```
+
    This will return paths to the original and colorized image frames for depths between 100 and 200.
 
    **Note**: When running the application in a containerized environment, the `/get_frames` API will return the locations of the generated images relative to the container's filesystem. Based on the `docker-compose.yml` configuration, the `/app/output` directory inside the container is mapped to the `./output` directory on the local machine. Therefore, you can find the generated images in the `./output` folder on your local system.
