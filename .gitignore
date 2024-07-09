@@ -1,0 +1,21 @@
+/output/*
+# Environment variables
+.env
+
+# Python virtual environment
+venv*/
+
+# Compiled Python files
+*.pyc
+
+# Logs
+*.log
+
+# IDE files
+.idea/
+.vscode/
+
+# Dependency directories
+__pycache__/
+dist/
+build/
